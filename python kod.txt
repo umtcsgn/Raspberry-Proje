@@ -9,7 +9,6 @@ GPIO.setup(13, GPIO.IN)
 pwm = GPIO.PWM(7, 100)
 pwm.start(7.5)
 
-# Guc yonetim register'lari
 power_mgmt_1 = 0x6b
 power_mgmt_2 = 0x6c
 
@@ -42,14 +41,14 @@ def get_x_rotation(x,y,z):
 
 
 bus = smbus.SMBus(1)
-address = 0x68 #MPU6050 I2C adresi
+address = 0x68 
 
-#MPU6050 ilk calistiginda uyku modunda oldugundan, calistirmak icin asagidaki komutu veriyoruz:
+
 bus.write_byte_data(address, power_mgmt_1, 0)
 
 while True:
  time.sleep(0.5)
- #Jiroskop register'larini oku
+
  gyro_xout = read_word_2c(0x43)
  gyro_yout = read_word_2c(0x45)
  gyro_zout = read_word_2c(0x47)
@@ -82,7 +81,7 @@ while True:
  elif get_x_rotation(accel_xout_scaled, accel_yout_scaled, accel_zout_scaled) < -25 :
 	print("turn left now")
 	pwm.ChangeDutyCycle(2.5)
- elif (get_x_rotation(accel_xout_scaled, accel_yout_scaled, accel_zout_scaled) > -25) and (get_x_rotation(accel_xout_scaled, accel_yout_scaled, accel_zout_scaled) < 50) :
+ elif (get_x_rotation(accel_xout_scaled, accel_yout_scaled, accel_zout_scaled) > -25) and (get_x_rotation(accel_xout_scaled, accel_yout_scaled, accel_zout_scaled) < 25) :
 	deger = 1
 	while deger:
 		print("stay there")
